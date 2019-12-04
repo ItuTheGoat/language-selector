@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UserCreate from "./components/UserCreate";
+import LanguageContext from "./contexts/LanguageContext";
 
 class App extends Component {
 	state = { language: "english" };
@@ -8,11 +9,18 @@ class App extends Component {
 		this.setState({ language });
 	};
 
+	// We use the context provider which allows us to change the value and to pass it through from our App comp which is the source
+
 	render() {
+		let heading =
+			this.state.language === "english"
+				? "Select Language: "
+				: "Seleccione el idioma: ";
+
 		return (
 			<div className='App ui container'>
 				<h1>
-					Select language:
+					{heading}
 					<i
 						className='large flag uk'
 						onClick={() => this.onLanguageChange("english")}
@@ -22,9 +30,10 @@ class App extends Component {
 						onClick={() => this.onLanguageChange("spanish")}
 					/>
 				</h1>
-				{this.state.language}
 
-				<UserCreate />
+				<LanguageContext.Provider value={this.state.language}>
+					<UserCreate />
+				</LanguageContext.Provider>
 			</div>
 		);
 	}
